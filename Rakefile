@@ -11,11 +11,13 @@ task :chat do
   input = ""
 
   until input == "q"
+    puts
     print "Enter message (q to quit): "
     input = STDIN.gets.chomp
 
     unless input == "q"
-      puts "\n" + GPTClient.new.chat(input, embeddings: Embeddings.get(input))
+      puts
+      puts GPTClient.new.chat(input, embeddings: Embeddings.get(input))
     end
   end
 end

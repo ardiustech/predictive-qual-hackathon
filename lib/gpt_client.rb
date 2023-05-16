@@ -17,11 +17,11 @@ class GPTClient
     messages << prompt(embeddings) if embeddings.any?
     messages << { role: "user", content: message }
 
-    Timeout.timeout(30) do
+    Timeout.timeout(90) do
       response =
         @client.chat(
           parameters: {
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: messages,
             temperature: 1
           }
