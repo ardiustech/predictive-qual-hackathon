@@ -14,10 +14,10 @@ class GPTClient
 
   def chat(message, embeddings: [])
     messages = []
-    messages << prompt(embeddings) if embeddings.any?
+    messages << prompt(embeddings) if embeddings && embeddings.any?
     messages << { role: "user", content: message }
 
-    Timeout.timeout(90) do
+    Timeout.timeout(120) do
       response =
         @client.chat(
           parameters: {
