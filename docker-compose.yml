@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  memory:
+    build: https://github.com/squarecat/chatgpt-retrieval-plugin.git
+    platform: linux/amd64
+    ports:
+      - 8080:8080
+    env_file: memory.env
