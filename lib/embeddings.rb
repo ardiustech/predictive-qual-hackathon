@@ -38,6 +38,6 @@ module Embeddings
         req.body = { queries: [{ query: query, top_k: 3 }] }.to_json
       end
 
-    req.body
+    JSON.parse(req.body).dig("results", 0, "results")
   end
 end

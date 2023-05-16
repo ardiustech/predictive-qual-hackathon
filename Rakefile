@@ -5,7 +5,7 @@ Bundler.require(:default)
 
 Dotenv.load("memory.env")
 
-require_relative "lib/embeddings"
+Dir["lib/*.rb"].each { |f| require_relative f }
 
 task :chat do
   input = ""
@@ -13,7 +13,10 @@ task :chat do
   until input == "q"
     print "Enter message (q to quit): "
     input = STDIN.gets.chomp
-    puts Embeddings.get(input) unless input == "q"
+
+    unless input == "q"
+      puts "\n" + GPTClient.new.chat(input, embeddings: Embeddings.get(input))
+    end
   end
 end
 
