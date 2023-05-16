@@ -3,7 +3,7 @@ require "time"
 require "bundler/setup"
 Bundler.require(:default)
 
-Dotenv.load("memory.env")
+Dotenv.load(".env")
 
 Dir["lib/*.rb"].each { |f| require_relative f }
 

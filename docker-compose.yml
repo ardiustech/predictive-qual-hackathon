@@ -6,4 +6,4 @@ services:
     platform: linux/amd64
     ports:
       - 8080:8080
-    env_file: memory.env
+    env_file: .env
