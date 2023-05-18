@@ -23,5 +23,5 @@ task :chat do
 end
 
 task :upload_docs do
-  puts Embeddings.upsert_file("docs/i6765.pdf")
+  Dir["docs/*"].each { |f| puts Embeddings.upsert_file(f) }
 end
