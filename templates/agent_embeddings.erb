@@ -1,0 +1,5 @@
+<% embeddings.each do |embedding| %>
+Document: <%= embedding["metadata"]["url"] %>
+Text: <%= embedding["text"] %>
+
+<% end %>

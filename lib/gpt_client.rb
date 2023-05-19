@@ -22,6 +22,11 @@ class GPTClient
 
     response = @client.chat(parameters: parameters)
 
-    stream ? stream_output : response.dig("choices", 0, "message", "content")
+    if stream
+      puts
+      stream_output
+    else
+      response.dig("choices", 0, "message", "content")
+    end
   end
 end
