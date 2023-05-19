@@ -7,19 +7,17 @@ Dotenv.load(".env")
 
 Dir["lib/*.rb"].each { |f| require_relative f }
 
-task :chat do
-  input = ""
+task :qna do
+  print "\nEntry your question: "
+  input = STDIN.gets.chomp
+  puts
 
-  until input == "q"
-    puts
-    print "Enter message (q to quit): "
-    input = STDIN.gets.chomp
+  prompt = {
+    role: "system",
+    content: Prompt.qna(embeddings: Embeddings.get(input))
+  }
 
-    unless input == "q"
-      puts
-      puts GPTClient.new.chat(input, embeddings: Embeddings.get(input))
-    end
-  end
+  GPTClient.new.chat(input, messages: [prompt], stream: true)
 end
 
 task :upload_docs do
