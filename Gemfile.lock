@@ -1,3 +1,9 @@
+PATH
+  remote: ../patois
+  specs:
+    patois (0.1.0)
+      ruby-openai
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,6 +33,7 @@ DEPENDENCIES
   dotenv
   faraday
   faraday-multipart
+  patois!
   pry
   rake
   ruby-openai

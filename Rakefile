@@ -12,50 +12,18 @@ task :qna do
   input = STDIN.gets.chomp
   puts
 
-  prompt = {
-    role: "system",
-    content: Template.qna_prompt(embeddings: Embeddings.get(input))
-  }
+  prompt_content = Template.qna_prompt(embeddings: Embeddings.get(input))
+  puts prompt_content
+
+  prompt = { role: "system", content: prompt_content }
 
   GPTClient.new.chat(input, messages: [prompt], stream: true)
   puts
 end
 
 task :agent do
-  input = ""
-  messages = [{ role: "system", content: Template.agent_prompt }]
-  client = GPTClient.new
-
-  loop do
-    print "\nEnter your message (q to quit): "
-    input = STDIN.gets.chomp
-    puts
-    puts "-----------------"
-    puts
-
-    break if input == "q"
-
-    response = nil
-
-    while response.nil? || response =~ /SEARCH: .*/
-      response = client.chat(input, messages: messages, stream: true)
-      puts
-      puts "-----------------"
-      puts
-
-      messages << { role: "user", content: input }
-      messages << { role: "system", content: response }
-
-      if response =~ /SEARCH: .*/
-        query = response.match(/SEARCH: (.*)/)[1]
-        input = Template.agent_embeddings(embeddings: Embeddings.get(query))
-
-        puts input
-        puts "-----------------"
-        puts
-      end
-    end
-  end
+  agent = Agent.create
+  Patois::Runners::CLI.new(agent).run
 end
 
 task :upload_docs do
