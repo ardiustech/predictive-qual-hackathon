@@ -1,7 +1,7 @@
 require "erb"
 
 class GPTClient
-  MODEL = "gpt-4"
+  MODEL = "gpt-3.5-turbo"
 
   def initialize
     @client = OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
