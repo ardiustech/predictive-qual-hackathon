@@ -22,8 +22,7 @@ task :qna do
 end
 
 task :four_part do
-  print "\nBriefly describe what your company sells or the services it provides
-The research expenses you claim for the R&D credit must be related to something that you sell or use to create revenue for your business. \n:"
+  print "\nDescribe the product your company sells or the services it provides: \n:"
   input = STDIN.gets.chomp
   puts
 
@@ -31,8 +30,9 @@ The research expenses you claim for the R&D credit must be related to something 
   # puts prompt_content
 
   prompt = { role: "system", content: prompt_content }
+  client = GPTClient.new
 
-  GPTClient.new.chat(input, messages: [prompt], stream: true)
+  puts client.chat(input, messages: [prompt], stream: false)
   puts
 end
 
