@@ -17,7 +17,7 @@ task :qna do
 
   prompt = { role: "system", content: prompt_content }
 
-  GPTClient.new.chat(input, messages: [prompt], stream: true)
+  GPTClient.new.chat("‘’’#{input}‘’’", messages: [prompt], stream: true)
   puts
 end
 
@@ -32,7 +32,7 @@ task :four_part do
   prompt = { role: "system", content: prompt_content }
   client = GPTClient.new
 
-  puts client.chat(input, messages: [prompt], stream: false)
+  puts client.chat("'''#{input}'''", messages: [prompt], stream: false)
   puts
 end
 
