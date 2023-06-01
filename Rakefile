@@ -27,7 +27,7 @@ The research expenses you claim for the R&D credit must be related to something 
   input = STDIN.gets.chomp
   puts
 
-  prompt_content = Template.four_part_prompt(embeddings: Embeddings.get(input))
+  prompt_content = Template.four_part_prompt_1(embeddings: Embeddings.get(input))
   # puts prompt_content
 
   prompt = { role: "system", content: prompt_content }

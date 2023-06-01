@@ -4,8 +4,13 @@ class Template
     ERB.new(template).result(binding)
   end
 
-def self.four_part_prompt(embeddings:)
-    template = File.read(path("four_part_prompt.erb"))
+  def self.four_part_prompt_1(embeddings:)
+    template = File.read(path("four_part_prompt-1.erb"))
+    ERB.new(template).result(binding)
+  end
+
+  def self.four_part_prompt_2(embeddings:)
+    template = File.read(path("four_part_prompt-2.erb"))
     ERB.new(template).result(binding)
   end
 
