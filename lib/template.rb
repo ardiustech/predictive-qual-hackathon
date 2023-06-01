@@ -4,6 +4,11 @@ class Template
     ERB.new(template).result(binding)
   end
 
+def self.four_part_prompt(embeddings:)
+    template = File.read(path("four_part_prompt.erb"))
+    ERB.new(template).result(binding)
+  end
+
   def self.agent_prompt
     template = File.read(path("agent_prompt.erb"))
     ERB.new(template).result(binding)
