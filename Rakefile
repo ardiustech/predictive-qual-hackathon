@@ -30,13 +30,11 @@ task :four_part do
   client = GPTClient.new
 
   four_part_questions.each do |four_part_question|
-    response = Question.ask_with_follow_up_on_json(
+    Question.ask_with_follow_up_on_json(
       initial_question: four_part_question[:question],
       gpt_client: client,
       prompt_proc: Template.method(four_part_question[:prompt_template].to_s)
     )
-
-    print response
   end
 end
 

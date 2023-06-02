@@ -1,4 +1,6 @@
 class Question
+  DEBUG = true.freeze
+
   def self.ask_with_follow_up_on_json(
     prompt_proc:,
     gpt_client:,
@@ -13,18 +15,12 @@ class Question
     prompt = { role: "system", content: prompt_content }
     response = gpt_client.chat("'''#{input}'''", messages: [prompt], stream: false)
 
-    is_a_q = is_a_question(response)
-    follow_needed = follow_up_needed(response)
-
-=begin
-    print "\n--[debug:]---\n"
-    print response + "\n"
-    print "is_a_q: #{is_a_q}\n"
-    print "follow_needed: #{follow_needed}\n"
-    print "-------------\n"
-=end
-
-    return response unless is_a_q && follow_needed
+    return format_output(
+      {
+        :debug => DEBUG,
+        :response => response,
+      }
+    ) unless is_a_question(response) && (follow_up_needed(response))
 
     clarification_question = get_clarification_question(response)
 
@@ -36,11 +32,6 @@ class Question
     )
   end
 
-  def self.is_a_question(response)
-    !!JSON.parse(response).dig('is_a_question')
-  rescue
-    false
-  end
   def self.follow_up_needed(response)
     clarification = get_response_clarification(response)
 
@@ -53,6 +44,23 @@ class Question
     JSON.parse(response)
   end
 
+  def self.format_output(args)
+    response = args[:response]
+
+    if args[:debug]
+      is_a_q = is_a_question(response)
+      follow_up_needed = follow_up_needed(response)
+
+      print "\n--[debug:]---\n"
+      print response + "\n"
+      print "is_a_q: #{is_a_q}\n"
+      print "follow_up_needed: #{follow_up_needed}\n"
+      print "-------------\n"
+    end
+
+    response
+  end
+
   def self.get_clarification_question(response)
     get_response_clarification(response)
   rescue StandardError
@@ -62,5 +70,11 @@ class Question
 
   def self.get_response_clarification(response)
     format_response(response)['clarification']
+  end
+
+  def self.is_a_question(response)
+    !!format_response(response).dig('is_a_question')
+  rescue
+    false
   end
 end
