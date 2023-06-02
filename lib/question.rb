@@ -16,26 +16,35 @@ class Question
     return response unless follow_up_needed(response) || num_tries > 3
 
     clarification_question = get_clarification_question(response)
+
     ask_with_follow_up_on_json(
       initial_question: clarification_question,
       prompt_proc: prompt_proc,
       gpt_client: gpt_client,
       num_tries: num_tries + 1,
     )
-
   end
 
   def self.follow_up_needed(response)
-    clarification = JSON.parse(response)['clarification']
+    clarification = get_response_clarification(response)
+
     !!clarification && !clarification.strip.empty?
   rescue
     false
   end
 
+  def self.format_response(response)
+    JSON.parse(response)
+  end
+
   def self.get_clarification_question(response)
-    JSON.parse(response)['clarification']
+    get_response_clarification(response)
   rescue StandardError
     puts "Error retrieving clarification question..."
     exit
+  end
+
+  def self.get_response_clarification(response)
+    format_response(response)['clarification']
   end
 end
