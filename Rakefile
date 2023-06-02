@@ -7,6 +7,11 @@ Dotenv.load(".env")
 
 Dir["lib/*.rb"].each { |f| require_relative f }
 
+four_part_questions = [
+  {:question => 'Describe the product your company sells or the services it provides:', :prompt_template => 'four_part_prompt_1'},
+  {:question => 'What activities did you perform this year to either create new products and services or improve your existing products or services?', :prompt_template => 'four_part_prompt_2'},
+]
+
 task :qna do
   print "\nEnter your question: "
   input = STDIN.gets.chomp
@@ -24,21 +29,15 @@ end
 task :four_part do
   client = GPTClient.new
 
-  response = Question.ask_with_follow_up_on_json(
-    initial_question: "Describe the product your company sells or the services it provides:",
-    gpt_client: client,
-    prompt_proc: Template.method(:four_part_prompt_1)
-  )
+  four_part_questions.each do |four_part_question|
+    response = Question.ask_with_follow_up_on_json(
+      initial_question: four_part_question[:question],
+      gpt_client: client,
+      prompt_proc: Template.method(four_part_question[:prompt_template].to_s)
+    )
 
-  print response
-
-  response_2 = Question.ask_with_follow_up_on_json(
-    initial_question: "What activities did you perform this year to either create new products and services or improve your existing products or services?",
-    gpt_client: client,
-    prompt_proc: Template.method(:four_part_prompt_2)
-  )
-
-  print response_2
+    print response
+  end
 end
 
 # task :agent do
