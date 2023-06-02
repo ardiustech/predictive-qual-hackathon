@@ -40,25 +40,6 @@ task :four_part do
   end
 end
 
-# task :agent do
-#   agent =
-#     Patois.new do
-#       openai_key ENV["OPENAI_API_KEY"]
-#       model "gpt-4"
-#
-#       prompt Template.agent_prompt
-#
-#       command :search,
-#               description:
-#                 "Search the IRS rules and tax codes related to R&D tax credits",
-#               handler: ->(query) {
-#                 Template.agent_embeddings(embeddings: Embeddings.get(query))
-#               }
-#     end
-#
-#   Patois::Runners::CLI.new(agent).run
-# end
-
 task :upload_docs do
   Dir["docs/*"].each { |f| puts Embeddings.upsert_file(f) }
 end
