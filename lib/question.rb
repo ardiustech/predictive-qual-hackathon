@@ -12,12 +12,11 @@ class Question
     prompt_content = prompt_proc.call(embeddings: Embeddings.get(input))
     prompt = { role: "system", content: prompt_content }
     response = gpt_client.chat("'''#{input}'''", messages: [prompt], stream: false)
-=begin
-    print "\ndebug:"
+    print "\n--[debug:]---\n"
     print response + "\n"
-=end
+    print "-------------\n"
 
-    return response unless is_a_question(response) && (follow_up_needed(response) || num_tries > 3)
+    return response unless is_a_question(response) && (follow_up_needed(response))
 
     clarification_question = get_clarification_question(response)
 

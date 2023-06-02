@@ -5,3 +5,10 @@ Format your response as a JSON object with “science”, “passes_test”, “
 
 Respond with “unknown” for “science” if you cannot identify the science used. Respond with a clarification if you cannot determine whether the activities pass the discovering technology information test. If the clarification is a question, set the value of is_a_question to true. If the clarification is a statement, set the value of is_a_question to false.
 
+
+Here is some relevant information from the IRS and tax code that may help determine qualification. If it doesn't seem relevant, then ignore it.
+<% embeddings.each do |embedding| %>
+  -------------------------
+  Document: <%= embedding["metadata"]["url"] %>
+  Text: <%= embedding["text"] %>
+<% end %>
