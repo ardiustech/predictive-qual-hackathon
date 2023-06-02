@@ -22,18 +22,23 @@ task :qna do
 end
 
 task :four_part do
-  print "\nDescribe the product your company sells or the services it provides: \n:"
-  input = STDIN.gets.chomp
-  puts
-
-  prompt_content = Template.four_part_prompt_1(embeddings: Embeddings.get(input))
-  # puts prompt_content
-
-  prompt = { role: "system", content: prompt_content }
   client = GPTClient.new
 
-  puts client.chat("'''#{input}'''", messages: [prompt], stream: false)
-  puts
+  response = Question.ask_with_follow_up_on_json(
+    initial_question: "Describe the product your company sells or the services it provides:",
+    gpt_client: client,
+    prompt_proc: Template.method(:four_part_prompt_1)
+  )
+
+  print response
+
+  response_2 = Question.ask_with_follow_up_on_json(
+    initial_question: "What activities did you perform this year to either create new products and services or improve your existing products or services?",
+    gpt_client: client,
+    prompt_proc: Template.method(:four_part_prompt_2)
+  )
+
+  print response_2
 end
 
 # task :agent do
